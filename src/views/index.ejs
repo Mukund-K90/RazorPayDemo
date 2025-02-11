@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay Payment</title>
+</head>
+
+<body>
+    <h1>Razorpay Payment Gateway Integration</h1>
+    <form id="payment-form">
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" required>
+        <button type="button" onclick="payNow()">Pay Now</button>
+    </form>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        async function payNow() {
+            const amount = document.getElementById('amount').value;
+
+            const response = await fetch('/order/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ amount, currency: 'INR', notes: {} })
+            });
+
+            const order = await response.json();
+
+            const options = {
+                key: '<%= process.env.RAZORPAY_KEY_ID %>',
+                amount: order.data.amount,
+                currency: order.data.currency,
+                name: 'Demo',
+                receipt_id: order.data.receipt,
+                description: `Test Transaction ${order.data.receipt}`,
+                order_id: order.data.id,
+                // callback_url: '/',
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+        }
+    </script>
+</body>
+
+</html>
