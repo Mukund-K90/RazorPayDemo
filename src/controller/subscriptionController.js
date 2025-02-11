@@ -1,19 +1,4 @@
-const { createSubscription, createCustomer, generateSubscriptionLink, getPlans, generateSubscriptionDetails } = require("../utils/razorpay");
-const crypto = require('crypto');
-
-//get all plans
-exports.getAllPlans = async (req, res) => {
-    try {
-        const plans = await getPlans();
-        res.status(200).json({
-            message: 'All plans fetched successfully',
-            status: "success",
-            data: plans.items
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-}
+const { createSubscription, generateSubscriptionDetails } = require("../utils/razorpay");
 
 //buySubscription
 exports.buySubscription = async (req, res) => {
@@ -43,8 +28,8 @@ exports.buySubscription = async (req, res) => {
 exports.getSubscriptionDetails = async (req, res) => {
     try {
         const { subscriptionId } = req.params;
-        const subscription = await generateSubscriptionDetails(subscriptionId);       
-         
+        const subscription = await generateSubscriptionDetails(subscriptionId);
+
         if (!subscription) {
             return res.status(404).json({
                 success: false,

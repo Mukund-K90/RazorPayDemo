@@ -21,6 +21,9 @@ app.get("/", (req, res) => {
     res.render("index", { title: "Welcome to Razorpay Demo" });
 });
 
+//plan routes
+app.use('/plan',require('./src/routes/planRoutes'));
+
 //subsciption routes
 app.use('/subscription', require('./src/routes/subscriptionRoutes'));
 

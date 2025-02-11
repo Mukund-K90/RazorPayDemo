@@ -67,6 +67,17 @@ const generateSubscriptionDetails = async (subscriptionId) => {
     }
 }
 
+//create plan
+const createPlan = async (options) => {
+    try {
+        const plan = await razorpayInstance.plans.create(options);
+        return plan;
+    } catch (error) {
+        console.error("Error creating plan:", error);
+        throw new Error("Failed to create plan");
+    }
+}
+
 //get all plans
 const getPlans = async () => {
     try {
@@ -103,6 +114,7 @@ module.exports = {
     createCustomer,
     checkCustomer,
     generateSubscriptionDetails,
+    createPlan,
     getPlans,
     createNewOrder,
     getOrderDetailsById
